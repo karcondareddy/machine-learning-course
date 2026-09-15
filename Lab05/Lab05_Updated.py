@@ -60,6 +60,9 @@ def minkowski_distance(A, B, p=2):
 # 4. Sorting Algorithms
 # ---------------------------------------------------------
 
+def fast_sort(distances):
+    return sorted(distances, key=lambda x: x[0])
+
 def bubble_sort(distances):
     arr = distances.copy()
     n = len(arr)
@@ -112,9 +115,11 @@ def insertion_sort(distances):
 # 5. Sorting Selection
 # ---------------------------------------------------------
 
-def sort_distances(distances, method="bubble"):
-    
-    if method == "bubble":
+def sort_distances(distances, method="fast"):
+    if method == "fast":
+        return fast_sort(distances)
+
+    elif method == "bubble":
         return bubble_sort(distances)
 
     elif method == "selection":
@@ -131,7 +136,7 @@ def sort_distances(distances, method="bubble"):
 # 6. Find k Nearest Neighbors
 # ---------------------------------------------------------
 
-def identify_neighbors(X_train, y_train, test_point, k, distance_p=2, sorting_method="bubble"):
+def identify_neighbors(X_train, y_train, test_point, k, distance_p=2, sorting_method="fast"):
 
     distances = []
 
@@ -197,7 +202,7 @@ def fit(X_train, y_train):
 # 9. Predict Function
 # ---------------------------------------------------------
 
-def predict(model, X_test, k=3, distance_p=2, sorting_method="bubble"):
+def predict(model, X_test, k=3, distance_p=2, sorting_method="fast"):
 
     X_train = model["X_train"]
     y_train = model["y_train"]
@@ -219,7 +224,7 @@ def predict(model, X_test, k=3, distance_p=2, sorting_method="bubble"):
 # 10. Score Function
 # ---------------------------------------------------------
 
-def score(model, X_test, y_test, k=3, distance_p=2, sorting_method="bubble"):
+def score(model, X_test, y_test, k=3, distance_p=2, sorting_method="fast"):
 
     predictions = predict( model, X_test, k, distance_p, sorting_method)
 
@@ -267,7 +272,7 @@ def weighted_vote(neighbors):
 # 12. Weighted Predict
 # ---------------------------------------------------------
 
-def weighted_predict(model, X_test, k=3, distance_p=2, sorting_method="bubble"):
+def weighted_predict(model, X_test, k=3, distance_p=2, sorting_method="fast"):
 
     X_train = model["X_train"]
     y_train = model["y_train"]
@@ -289,7 +294,7 @@ def weighted_predict(model, X_test, k=3, distance_p=2, sorting_method="bubble"):
 # 13. Weighted Score
 # ---------------------------------------------------------
 
-def weighted_score(model, X_test, y_test, k=3, distance_p=2, sorting_method="bubble"):
+def weighted_score(model, X_test, y_test, k=3, distance_p=2, sorting_method="fast"):
 
     predictions = weighted_predict( model, X_test, k, distance_p, sorting_method)
 
@@ -367,9 +372,9 @@ my_model = fit(X_train, y_train)
 # A4-A6: k = 3
 # ---------------------------------------------------------
 
-my_accuracy = score(my_model, X_test, y_test, k=3, sorting_method="bubble")
+my_accuracy = score(my_model, X_test, y_test, k=3, sorting_method="fast")
 
-my_predictions = predict(my_model, X_test, k=3, sorting_method="bubble")
+my_predictions = predict(my_model, X_test, k=3, sorting_method="fast")
 
 
 print("Our kNN Accuracy:", my_accuracy)
@@ -406,7 +411,7 @@ weighted_accuracies = []
 for k in k_values:
 
     # Our normal kNN
-    acc = score( my_model, X_test, y_test, k=k, sorting_method="bubble")
+    acc = score( my_model, X_test, y_test, k=k, sorting_method="fast")
 
     my_accuracies.append(acc)
 
@@ -422,7 +427,7 @@ for k in k_values:
 
 
     # Weighted kNN
-    weighted_acc = weighted_score( my_model, X_test, y_test, k=k, sorting_method="bubble")
+    weighted_acc = weighted_score( my_model, X_test, y_test, k=k, sorting_method="fast")
 
     weighted_accuracies.append(weighted_acc)
 
